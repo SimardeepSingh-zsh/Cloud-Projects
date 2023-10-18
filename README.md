@@ -35,6 +35,3 @@ Please ensure your pull request adheres to the following guidelines:
 - Start the description with a capital and end with a full stop/period.
 - Check your spelling and grammar.
 
-## License
-
-MIT
