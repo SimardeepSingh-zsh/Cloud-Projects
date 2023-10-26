@@ -1,0 +1,66 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Disaster Recovery CloudFormation Template
+
+Parameters:
+  PrimaryVpcCidr:
+    Type: String
+    Description: CIDR block for the primary VPC
+  SecondaryVpcCidr:
+    Type: String
+    Description: CIDR block for the secondary VPC
+
+Resources:
+  # Primary VPC
+  PrimaryVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref PrimaryVpcCidr
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: PrimaryVPC
+
+  # Secondary VPC
+  SecondaryVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref SecondaryVpcCidr
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: SecondaryVPC
+
+  # Primary Security Group
+  PrimarySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for the primary environment
+      VpcId: !Ref PrimaryVPC
+
+  # Secondary Security Group
+  SecondarySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for the secondary environment
+      VpcId: !Ref SecondaryVPC
+
+  # Additional resources for primary and secondary environments can be added here.
+
+Outputs:
+  PrimaryVPCId:
+    Description: VPC ID of the primary environment
+    Value: !Ref PrimaryVPC
+
+  SecondaryVPCId:
+    Description: VPC ID of the secondary environment
+    Value: !Ref SecondaryVPC
+
+  PrimarySecurityGroupId:
+    Description: Security Group ID for the primary environment
+    Value: !GetAtt PrimarySecurityGroup.GroupId
+
+  SecondarySecurityGroupId:
+    Description: Security Group ID for the secondary environment
+    Value: !GetAtt SecondarySecurityGroup.GroupId
