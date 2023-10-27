@@ -1,0 +1,19 @@
+Resources:
+  MyElasticsearchDomain:
+    Type: AWS::Elasticsearch::Domain
+    Properties:
+      ElasticsearchVersion: 7.10
+      DomainName: my-elasticsearch-domain
+      NodeToNodeEncryptionOptions:
+        Enabled: true
+      ElasticsearchClusterConfig:
+        InstanceType: t2.small.elasticsearch
+        InstanceCount: 1
+      EBSOptions:
+        EBSEnabled: true
+        VolumeSize: 10
+
+Outputs:
+  ElasticsearchDomainEndpoint:
+    Description: Endpoint for the Elasticsearch domain
+    Value: !GetAtt MyElasticsearchDomain.Endpoint
