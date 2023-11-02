@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-deployment
+  labels:
+    app: webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: simarawsdocker/webapp:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        env:
+        - name: APP_ENV
+          value: production
+        - name: DATABASE_URL
+          value: postgres://user:password@database-host:5432/mydb
