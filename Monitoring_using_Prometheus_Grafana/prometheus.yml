@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'your_application'
+    static_configs:
+      - targets: ['your_application_host:your_application_port']
+  
+  # Additional scrape targets
+  - job_name: 'other_services'
+    static_configs:
+      - targets: ['other_service_host:other_service_port']
