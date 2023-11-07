@@ -1,0 +1,56 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "your-container-image"
+        OWASP_ZAP_URL = "https://your-app-url"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker push $IMAGE_NAME'
+            }
+        }
+
+        stage('Security Scanning') {
+            steps {
+                script {
+                    def zapScanResult = sh(script: 'zap-cli --quick-scan -t $OWASP_ZAP_URL', returnStatus: true)
+                    if (zapScanResult != 0) {
+                        error("OWASP ZAP scan failed. Please review the results.")
+                    }
+
+                    def anchoreScanResult = sh(script: "docker pull $IMAGE_NAME && anchore-cli image add $IMAGE_NAME && anchore-cli image wait $IMAGE_NAME && anchore-cli evaluate check $IMAGE_NAME", returnStatus: true)
+                    if (anchoreScanResult != 0) {
+                        error("Anchore scan failed. Please review the results.")
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Your deployment steps here
+            }
+        }
+    }
+
+    post {
+        failure {
+            // Notify or take actions on failure
+            echo "Security scan or deployment failed. Notify the team."
+        }
+        success {
+            // Notify or take actions on success
+            echo "Security scan and deployment successful. Ready for production."
+        }
+    }
+}
