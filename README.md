@@ -20,9 +20,9 @@ We welcome contributions from the community to enrich our collection of cloud pr
 
 - Alphabetize your entry.
 - Prior to submitting a new project, please search existing suggestions to avoid duplicates.
-- We value beautifully designed or uniquely standout READMEs.
+- I value beautifully designed or uniquely standout READMEs.
 - For each suggestion, kindly create an individual pull request.
-- We encourage the addition of new categories or improvements to the existing categorization.
+- I encourage the addition of new categories or improvements to the existing categorization.
 - Keep your descriptions concise yet informative, starting with a capital letter and ending with a period.
 - Always double-check your spelling and grammar to maintain a high level of quality.
 
