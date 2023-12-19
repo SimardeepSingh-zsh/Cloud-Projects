@@ -59,5 +59,3 @@ Python - The programming language used.
 Docker - Used for containerization.
 Jenkins - Used for continuous integration and deployment.
 Terraform - Used for infrastructure as code.
-Contributing
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to me.
