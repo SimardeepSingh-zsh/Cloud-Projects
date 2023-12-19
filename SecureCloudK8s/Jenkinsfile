@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define environment variables here.
+        // For example, you might define the Docker image tag as an environment variable.
+        IMAGE_TAG = 'my-python-app'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Build Docker image
+                    sh "docker build -t ${env.IMAGE_TAG} ."
+                }
+            }
+        }
+        
+        stage('Test'){
+            steps{
+                script {
+                    // Run tests
+                    sh 'python -m unittest discover'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Deploy application
+                    sh 'python scripts/deploy.py'
+                }
+            }
+        }
+    }
+
+    post {
+        // Define post-build actions here.
+        // For example, you might send a notification if the build fails.
+        failure {
+            // Send notification
+        }
+    }
+}
